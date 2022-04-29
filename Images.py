@@ -16,39 +16,64 @@ class ImgConfig:
 
 class ImgBoss(PhotoImage, ImgConfig):
     def __init__(self) -> None:
-        super().__init__(file=self._BOSS)
+        try:
+            super().__init__(file=self._BOSS)
+        except (FileNotFoundError, IOError) as e:
+            print(e)
+
 
 
 class ImgFloor(PhotoImage, ImgConfig):
     def __init__(self) -> None:
-        super().__init__(file=self._FLOOR)
+        try:
+            super().__init__(file=self._FLOOR)
+        except (FileNotFoundError, IOError) as e:
+            print(e)
 
 
 class ImgHeroDown(PhotoImage, ImgConfig):
     def __init__(self) -> None:
-        super().__init__(file=self._HERO_DOWN)
+        try:
+            super().__init__(file=self._HERO_DOWN)
+        except (FileNotFoundError, IOError) as e:
+            print(e)
 
 
 class ImgHeroLeft(PhotoImage, ImgConfig):
     def __init__(self) -> None:
-        super().__init__(file=ImgConfig._HERO_LEFT)
+        try:
+            super().__init__(file=ImgConfig._HERO_LEFT)
+        except (FileNotFoundError, IOError) as e:
+            print(e)
 
 
 class ImgHeroRight(PhotoImage, ImgConfig):
     def __init__(self) -> None:
-        super().__init__(file=ImgConfig._HERO_RIGHT)
+        try:
+            super().__init__(file=ImgConfig._HERO_RIGHT)
+        except (FileNotFoundError, IOError) as e:
+            print(e)
 
 
 class ImgHeroUp(PhotoImage, ImgConfig):
     def __init__(self) -> None:
-        super().__init__(file=self._HERO_UP)
+        try:
+            super().__init__(file=self._HERO_UP)
+        except (FileNotFoundError, IOError) as e:
+            print(e)
 
 
 class ImgSkeleton(PhotoImage, ImgConfig):
     def __init__(self) -> None:
-        super().__init__(file=self._SKELETON)
+        try:
+            super().__init__(file=self._SKELETON)
+        except (FileNotFoundError, IOError) as e:
+            print(e)
 
 
 class ImgWall(PhotoImage, ImgConfig):
     def __init__(self) -> None:
-        super().__init__(file=self._WALL)
+        try:
+            super().__init__(file=self._WALL)
+        except (FileNotFoundError, IOError) as e:
+            print(e)

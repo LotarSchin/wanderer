@@ -22,7 +22,7 @@ class Window(Tk, WindowConfig):
 
     def __init__(self):
         super().__init__()
-
+        self.closing = False
         self.center()
         self.title(self._TITLE)
 
@@ -59,19 +59,29 @@ class Window(Tk, WindowConfig):
         self.geometry('%dx%d+%d+%d' % (w, h, x, y))
 
     def down_key(self, event):
-        self.game_control.move(self.game_control.hero, y=1)
+        if self.game_control:
+            self.game_control.move(self.game_control.hero, y=1)
 
     def draw_screen(self):
-        self.screen.draw_screen()
+        if self.screen and not self.closing:
+            self.screen.draw_screen()
+
+    def destroy(self) -> None:
+        self.closing = True
+        super().destroy()
 
     def left_key(self, event):
-        self.game_control.move(self.game_control.hero, x=-1)
+        if self.game_control:
+            self.game_control.move(self.game_control.hero, x=-1)
 
     def right_key(self, event):
-        self.game_control.move(self.game_control.hero, x=1)
+        if self.game_control:
+            self.game_control.move(self.game_control.hero, x=1)
 
     def up_key(self, event):
-        self.game_control.move(self.game_control.hero, y=-1)
+        if self.game_control:
+            self.game_control.move(self.game_control.hero, y=-1)
 
     def space_key(self, event):
-        self.game_control.prepare_battle(self.game_control.hero)
+        if self.game_control:
+            self.game_control.prepare_battle(self.game_control.hero)
