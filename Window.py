@@ -10,6 +10,7 @@ from Sounds import Sound
 
 
 class WindowConfig:
+    #Should be moved to yaml similarly to Map.py
     _TITLE = "Wanderer Game"
     _LEFT_KEY = "<Left>"
     _RIGHT_KEY = "<Right>"
@@ -23,14 +24,14 @@ class Window(Tk, WindowConfig):
     def __init__(self):
         super().__init__()
         self.closing = False
-        self.center()
-        self.title(self._TITLE)
-
         self.map = Map()
 
         self.game_control = GameControl(self.map)
 
         self.__bind_keys()
+
+        self.center()
+        self.title(self._TITLE)
 
         self.screen = GameScreen(
             self, self.map, self.game_control)
@@ -45,8 +46,8 @@ class Window(Tk, WindowConfig):
         self.bind(self._SPACE, self.space_key)
 
     def center(self):
-        w = ImgConfig.IMG_SIZE * MapConfig.MAP_X
-        h = ImgConfig.IMG_SIZE * MapConfig.MAP_Y + MapConfig.STATS_X
+        w = ImgConfig.IMG_SIZE * self.map.map_config.map_x
+        h = ImgConfig.IMG_SIZE * self.map.map_config.map_y + self.map.map_config.stats_x
 
         monitor_info = GetMonitorInfo(MonitorFromPoint((0, 0)))
         monitor_work_map = monitor_info.get("Work")

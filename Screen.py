@@ -2,10 +2,10 @@ from tkinter import *
 
 from Character import Skeleton
 from Images import *
-from Map import MapConfig
 
 
 class GameScreen(Canvas):
+    # Should be moved to a yaml, similarly to Map.py
     __STATS_POSITION_X = 160
     __STATS_POSITION_Y = 20
     __STATS_POSITION_OFFSET = 350
@@ -20,9 +20,8 @@ class GameScreen(Canvas):
     __ENEMY_STAT_TEXT_FONT = 'Arial 11 bold'
 
     def __init__(self, window, game_map, game_control):
-        super().__init__(window, width=MapConfig.MAP_X *
-                                       ImgConfig.IMG_SIZE,
-                         height=MapConfig.MAP_Y * ImgConfig.IMG_SIZE + self.__STATS_HEIGHT)
+        super().__init__(window, width=game_map.map_config.map_x * ImgConfig.IMG_SIZE,
+                         height=game_map.map_config.map_y * ImgConfig.IMG_SIZE + self.__STATS_HEIGHT)
         self.__floor = None
         self.load_images()
         self.pack()
@@ -97,7 +96,7 @@ class GameScreen(Canvas):
         return self.__STATS_POSITION_X + self.__STATS_POSITION_OFFSET
 
     def get_txt_pos_y(self):
-        return ImgConfig.IMG_SIZE * MapConfig.MAP_Y + self.__STATS_POSITION_Y
+        return ImgConfig.IMG_SIZE * self._map.map_config.map_y + self.__STATS_POSITION_Y
 
     def load_images(self) -> None:
         self.__floor = ImgFloor()

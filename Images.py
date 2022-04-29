@@ -2,6 +2,7 @@ from tkinter import PhotoImage
 
 
 class ImgConfig:
+    #Should be moved to yaml, similarly to Map.py
     __DIR = "images/"
     _FLOOR = __DIR + "floor.png"
     _WALL = __DIR + "wall.png"

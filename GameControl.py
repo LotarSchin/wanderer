@@ -1,11 +1,11 @@
 from math import sqrt
 
 from Character import *
-from Map import MapConfig
 from Sounds import Sound
 
 
 class GameControl:
+    #Should be moved to yaml similarly to Map.py
     __MIN_NUM_OF_SKELETONS = 2
     __MAX_NUM_OF_SKELETONS = 5
     _ENEMY_TYPES = [Skeleton.TYPE,
@@ -65,11 +65,9 @@ class GameControl:
 
     def __init_free_floor_map(self):
         self.__free_floor_map = []
-        for x in range(MapConfig.MAP_X):
-            for y in range(MapConfig.MAP_Y):
-                if x in MapConfig._WALL_COORDINATES[y]:
-                    pass
-                else:
+        for x in range(self.map.map_config.map_x):
+            for y in range(self.map.map_config.map_y):
+                if self.map.map_config.is_floor(x, y):
                     self.__add_free_floor_map((x, y))
 
     def __register_character(self, character):
@@ -139,10 +137,10 @@ class GameControl:
         if self._level_status in (self.LEVEL_STATUS_WON, self.LEVEL_STATUS_FAILED):
             self.set_level_in_progress()
         if x != 0:
-            if MapConfig.is_floor(character.x + x, character.y):
+            if self.map.map_config.is_floor(character.x + x, character.y):
                 character.x += x
         elif y != 0:
-            if MapConfig.is_floor(character.x, character.y + y):
+            if self.map.map_config.is_floor(character.x, character.y + y):
                 character.y += y
         else:
             pass
