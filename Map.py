@@ -13,9 +13,7 @@ ERR_KEY_ERROR = "Key error occured during the processing of {file}! Message: {er
 MAP_X = "map_x"
 MAP_Y = "map_y"
 STATS_X = "stats_x"
-WALL_COORDINATES_V1 = 'wall_coordinates_v1'
-WALL_COORDINATES_V2 = 'wall_coordinates_v2'
-
+WALL_LISTS = 'wall_lists'
 
 class MapConfig:
 
@@ -24,8 +22,7 @@ class MapConfig:
         self.map_y = 0
         self.stats_x = 0
         self.act_wall_list = []
-        self.wall_list_v1 = []
-        self.wall_list_v2 = []
+        self.wall_lists = []
         self.map_config = dict()
         self.load_config()
 
@@ -38,6 +35,9 @@ class MapConfig:
     def is_wall(self, x=0, y=0):
         return self.is_in_map(x, y) and x in self.act_wall_list[y]
 
+    def randomize_wall(self):
+        self.act_wall_list = random.choice(self.wall_lists)
+
     def load_config(self):
         with open(CFG_FILE) as cfg:
             try:
@@ -45,10 +45,8 @@ class MapConfig:
                 self.map_x = map_config[MAP_X]
                 self.map_y = map_config[MAP_Y]
                 self.stats_x = map_config[STATS_X]
-                self.wall_list_v1 = list(map_config[WALL_COORDINATES_V1].values())
-                self.wall_list_v2 = list(map_config[WALL_COORDINATES_V2].values())
-                self.act_wall_list = self.wall_list_v1 if random.choice(
-                    [True, False]) else self.wall_list_v2
+                self.wall_lists = map_config[WALL_LISTS]
+                self.randomize_wall()
             except FileNotFoundError:
                 print(ERR_FILE_NOT_EXIST.format(file=CFG_FILE))
             except AttributeError as e:
@@ -74,6 +72,10 @@ class Map:
         self._img_floor = ImgFloor()
         self._img_wall = ImgWall()
         self.map_config = MapConfig()
+        self.generate_level()
+
+    def generate_level(self):
+        self.map_config.randomize_wall()
         self.generate_map()
         self.generate_graph()
 

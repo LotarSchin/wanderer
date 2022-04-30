@@ -18,12 +18,14 @@ class GameControl:
     def __init__(self, game_map):
         self._level_status = GameControl.LEVEL_STATUS_IN_PROGRESS
         self.map = game_map
-        self.__init_free_floor_map()
         self.__generate_level()
         self.set_level_in_progress()
 
-    def __generate_level(self):
+    def __generate_level(self, level_up=False):
         self.__characters = dict()
+        if level_up:
+            self.map.generate_level()
+        self.__init_free_floor_map()
         self.__create_hero()
         self.__create_enemies()
         self.__init_character_positions()
@@ -178,7 +180,7 @@ class GameControl:
         Sound.play(Sound.SOUND_WIN)
         self._level_status = self.LEVEL_STATUS_WON
         Character.level += 1
-        self.__generate_level()
+        self.__generate_level(True)
 
     def set_level_failed(self):
         Sound.play(Sound.SOUND_GAME_OVER)
