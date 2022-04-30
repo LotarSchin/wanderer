@@ -1,3 +1,4 @@
+import time
 from math import sqrt
 
 from Character import *
@@ -194,6 +195,7 @@ class GameControl:
     @staticmethod
     def strike(attacker, defender):
         Sound.play(Sound.SOUND_HIT)
+        time.sleep(0.2)
         attacker_sv = attacker.get_sv()
         if attacker_sv > defender.get_dp():
             defender.hp -= attacker_sv - defender.get_dp()
