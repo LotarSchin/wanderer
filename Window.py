@@ -2,28 +2,36 @@ from tkinter import Tk
 
 from win32api import GetMonitorInfo, MonitorFromPoint
 
+from Config import Config
 from GameControl import GameControl
 from Images import ImgConfig
-from Map import Map, MapConfig
+from Map import Map
 from Screen import GameScreen
 from Sounds import Sound
 
-
-class WindowConfig:
-    #Should be moved to yaml similarly to Map.py
-    _TITLE = "Wanderer Game"
-    _LEFT_KEY = "<Left>"
-    _RIGHT_KEY = "<Right>"
-    _UP_KEY = "<Up>"
-    _DOWN_KEY = "<Down>"
-    _SPACE = "<space>"
+CFG_FILE = r'./config/WindowConfig.yaml'
+TITLE = "title"
+LEFT_KEY = "left_key"
+RIGHT_KEY = "right_key"
+UP_KEY = "up_key"
+DOWN_KEY = "down_key"
+SPACE = "space_key"
 
 
-class Window(Tk, WindowConfig):
+class Window(Tk):
 
     def __init__(self):
         super().__init__()
+        self.__title = None
+        self.__down_key = None
+        self.__left_key = None
+        self.__up_key = None
+        self.__right_key = None
+        self.__space_key = None
         self.closing = False
+
+        self.load_config()
+
         self.map = Map()
 
         self.game_control = GameControl(self.map)
@@ -31,19 +39,20 @@ class Window(Tk, WindowConfig):
         self.__bind_keys()
 
         self.center()
-        self.title(self._TITLE)
+        self.title(self.__title)
 
         self.screen = GameScreen(
             self, self.map, self.game_control)
 
+        self.game_control.screen = self.screen
         Sound.play(Sound.SOUND_START)
 
     def __bind_keys(self):
-        self.bind(self._LEFT_KEY, self.left_key)
-        self.bind(self._RIGHT_KEY, self.right_key)
-        self.bind(self._UP_KEY, self.up_key)
-        self.bind(self._DOWN_KEY, self.down_key)
-        self.bind(self._SPACE, self.space_key)
+        self.bind(self.__left_key, self.left_key)
+        self.bind(self.__right_key, self.right_key)
+        self.bind(self.__up_key, self.up_key)
+        self.bind(self.__down_key, self.down_key)
+        self.bind(self.__space_key, self.space_key)
 
     def center(self):
         w = ImgConfig.IMG_SIZE * self.map.map_config.map_x
@@ -74,6 +83,15 @@ class Window(Tk, WindowConfig):
     def left_key(self, event):
         if self.game_control:
             self.game_control.move(self.game_control.hero, x=-1)
+
+    def load_config(self):
+        window_config = Config.load_config(CFG_FILE)
+        self.__title = window_config[TITLE]
+        self.__left_key = window_config[LEFT_KEY]
+        self.__right_key = window_config[RIGHT_KEY]
+        self.__up_key = window_config[UP_KEY]
+        self.__down_key = window_config[DOWN_KEY]
+        self.__space_key = window_config[SPACE]
 
     def right_key(self, event):
         if self.game_control:

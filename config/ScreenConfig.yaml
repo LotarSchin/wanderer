@@ -1,0 +1,12 @@
+enemy_stat_text_color: Red
+enemy_stat_text_font: Arial 11 bold
+hero_stat_text_color: Black
+hero_stat_text_font: Arial 11 bold
+stats_format: '{name} (Level {level} ) HP: {hp}/{orig_hp} | DP: {dp} | SP: {sp} '
+stats_format_enemy: '{name} HP: {hp}/{orig_hp} | DP: {dp} | SP: {sp} | Key: ({keyholder})'
+stats_format_failed: OHH, YOU JUST DIED!!! CURRENT LEVEL IS {level}
+stats_format_won: CONGRATS!!! YOU WON!!! NEXT LEVEL IS {level}
+stats_height: 50
+stats_position_offset: 350
+stats_position_x: 160
+stats_position_y: 20

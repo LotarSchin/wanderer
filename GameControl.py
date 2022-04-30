@@ -6,7 +6,7 @@ from Sounds import Sound
 
 
 class GameControl:
-    #Should be moved to yaml similarly to Map.py
+    # Should be moved to yaml similarly to Map.py
     __MIN_NUM_OF_SKELETONS = 2
     __MAX_NUM_OF_SKELETONS = 5
     _ENEMY_TYPES = [Skeleton.TYPE,
@@ -19,6 +19,7 @@ class GameControl:
     def __init__(self, game_map):
         self._level_status = GameControl.LEVEL_STATUS_IN_PROGRESS
         self.map = game_map
+        self.screen = None
         self.__generate_level()
         self.set_level_in_progress()
 
@@ -94,8 +95,10 @@ class GameControl:
             if character.num_of_moves == self.__MAX_NUM_OF_HERO_MOVES:
                 character.num_of_moves = 0
                 self.move_enemies()
+                self.screen.draw_screen()
         elif character.x == self.hero.x and character.y == self.hero.y:
             self.prepare_battle(character)
+            self.screen.draw_screen()
 
     def eval_level_status(self, character):
         if character.get_character_type() == Skeleton.TYPE:

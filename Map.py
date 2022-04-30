@@ -1,19 +1,16 @@
 import random
 from collections import defaultdict
 
-import yaml
-
+from Config import Config
 from Images import ImgFloor, ImgWall
 
 CFG_FILE = r'./config/MapConfig.yaml'
-ERR_FILE_NOT_EXIST = "{file} does not exist!"
-ERR_ATTR_ERROR = "Attribute error occured during the processing of {file}! Message: {error}"
-ERR_KEY_ERROR = "Key error occured during the processing of {file}! Message: {error}"
 # Dict keys
 MAP_X = "map_x"
 MAP_Y = "map_y"
 STATS_X = "stats_x"
 WALL_LISTS = 'wall_lists'
+
 
 class MapConfig:
 
@@ -39,20 +36,17 @@ class MapConfig:
         self.act_wall_list = random.choice(self.wall_lists)
 
     def load_config(self):
-        with open(CFG_FILE) as cfg:
-            try:
-                map_config = yaml.load(cfg, Loader=yaml.FullLoader)
-                self.map_x = map_config[MAP_X]
-                self.map_y = map_config[MAP_Y]
-                self.stats_x = map_config[STATS_X]
-                self.wall_lists = map_config[WALL_LISTS]
-                self.randomize_wall()
-            except FileNotFoundError:
-                print(ERR_FILE_NOT_EXIST.format(file=CFG_FILE))
-            except AttributeError as e:
-                print(ERR_ATTR_ERROR.format(file=CFG_FILE, error=e))
-            except KeyError as e:
-                print(ERR_KEY_ERROR.format(file=CFG_FILE, error=e))
+        try:
+            map_config = dict(Config.load_config(CFG_FILE))
+            self.map_x = map_config[MAP_X]
+            self.map_y = map_config[MAP_Y]
+            self.stats_x = map_config[STATS_X]
+            self.wall_lists = map_config[WALL_LISTS]
+            self.randomize_wall()
+        except AttributeError as e:
+            print(Config.ERR_ATTR_ERROR.format(file=CFG_FILE, error=e))
+        except KeyError as e:
+            print(Config.ERR_ATTR_ERROR.format(file=CFG_FILE, error=e))
 
 
 class MapBlock:

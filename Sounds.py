@@ -8,7 +8,7 @@ class PlaySoundError(Exception):
 
 
 class Sound:
-    #Should be moved to yaml, similarly to Map.py
+    # Should be moved to yaml, similarly to Map.py
     __DIR = os.getcwd() + "/sounds/"
     SOUND_DEAD = __DIR + "dead.mp3"
     SOUND_GAME_OVER = __DIR + "gameover.wav"
